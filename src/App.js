@@ -3,6 +3,7 @@ import './App.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import HcpRegistration from "./Pages/HcpRegistration";
+import TreatmentCalendar from './Pages/TreatmentCalendar';
 
 
 function App() {
@@ -18,9 +19,18 @@ function App() {
  
           <div id="Calculation">
             <Routes>
-              <Route path='/hcp-support' element={<HcpRegistration/>}/>
+              <Route path="/hcp-support" element={<HcpRegistration/>}/>
             </Routes>
           </div>
+
+          <div id="calendar">
+            <Routes>
+              <Route path="/treatment-calendar" element={<TreatmentCalendar />} />
+            </Routes>
+
+          </div>
+
+
         </div>
       </BrowserRouter>
  
