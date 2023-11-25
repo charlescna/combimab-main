@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import '../App.css';
-
+import '../TreatmentCalendar.css';
 const TreatmentCalendar = () => {
   const [patientWeight, setPatientWeight] = useState('');
   const [startingDate, setStartingDate] = useState(new Date().toISOString().slice(0, 10));

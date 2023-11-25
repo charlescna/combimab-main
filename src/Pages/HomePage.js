@@ -48,9 +48,7 @@ function HomePage() {
           <p>For Health Care professionals support to have infusion specifications</p>
           <p>Steps for preparation, Calendar generation please click HCP Support </p>
 
-          <button className="hcp-support-button"> 
-            HCP Support
-          </button>
+          <Link className="hcp-support-button" to="/hcp-support-button">HCP Support</Link>
 
           <p className="disclaimer">This web App is not for medical purpose. All information here is dummy data and is done as a project for students in CAN for CP3540.</p>
         </div>

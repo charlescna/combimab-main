@@ -19,7 +19,7 @@ function App() {
  
           <div id="Calculation">
             <Routes>
-              <Route path="/hcp-support" element={<HcpRegistration/>}/>
+              <Route path="/hcp-support-button" element={<HcpRegistration/>}/>
             </Routes>
           </div>
 
