@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Link} from 'react-router-dom';
 import '../App.css';
 import '../TreatmentCalendar.css';
 const TreatmentCalendar = () => {
@@ -60,6 +61,12 @@ const TreatmentCalendar = () => {
   return (
     <div className='treatment-calendar-page'>
       <h2>HCP Support</h2>
+
+      {/*Add a back button to go to the home page */}
+
+      <Link to='/'>
+        <button className="back-button">Back to Home</button>
+      </Link>
 
       <div className='form-container'>
         <label>Patient Weight</label>
