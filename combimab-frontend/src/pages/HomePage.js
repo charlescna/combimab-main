@@ -62,10 +62,11 @@ function HomePage() {
 
           
           {/* <button className="hcp-support-button" onClick={showGoogleAuthComponent}> */}
+          <Link to="/HcpRegisteration">
           <button className="hcp-support-button">
                   HCP Support
-          </button>
-
+          </button> </Link>
+         
 {/*           
           {showGoogleAuth && (
             <div>

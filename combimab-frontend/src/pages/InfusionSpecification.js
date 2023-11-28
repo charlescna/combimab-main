@@ -84,7 +84,7 @@ const InfusionSpecification = ()=> {
         </tbody>
       </table>
 
-      <Link to="/TreatmentCalendar">
+      <Link to="/TreatmentCalender">
         <button className="CALENDAR">CALENDAR</button>
       </Link>
 
