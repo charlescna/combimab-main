@@ -4,8 +4,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import '../App.css';
-import { GoogleLoginButton } from "react-social-login-buttons";
-import { LoginSocialGoogle } from "reactjs-social-login";
+// import { GoogleLoginButton } from "react-social-login-buttons";
+// import { LoginSocialGoogle } from "reactjs-social-login";
 
 function HomePage() {
   const [patientWeight, setPatientWeight] = useState('');
@@ -15,14 +15,14 @@ function HomePage() {
     setGeneratedDose(dose);
   };
 
-  const redirectToGoogleAuthentication = () => {
-    const googleAuthenticationURL = 'https://accounts.google.com'; 
-    window.location.href = googleAuthenticationURL;
-  };
+  // const redirectToGoogleAuthentication = () => {
+  //   const googleAuthenticationURL = 'https://accounts.google.com'; 
+  //   window.location.href = googleAuthenticationURL;
+  // };
 
-  const showGoogleAuthComponent = () => {
-    setShowGoogleAuth(true);
-  };
+  // const showGoogleAuthComponent = () => {
+  //   setShowGoogleAuth(true);
+  // };
 
   return (
     <div className="homepage-container">
@@ -61,11 +61,12 @@ function HomePage() {
           <p>Steps for preparation, Calendar generation please click HCP Support </p>
 
           
-          <button className="hcp-support-button" onClick={showGoogleAuthComponent}>
-            HCP Support
+          {/* <button className="hcp-support-button" onClick={showGoogleAuthComponent}> */}
+          <button className="hcp-support-button">
+                  HCP Support
           </button>
 
-          
+{/*           
           {showGoogleAuth && (
             <div>
               <LoginSocialGoogle
@@ -83,7 +84,7 @@ function HomePage() {
                 <GoogleLoginButton />
               </LoginSocialGoogle>
             </div>
-          )}
+          )} */}
 
           <p className="disclaimer">This web App is not for medical purpose. All information here is dummy data and is done as a project for students in CAN for CP3540.</p>
         </div>
