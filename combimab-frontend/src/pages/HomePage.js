@@ -11,9 +11,33 @@ function HomePage() {
   const [patientWeight, setPatientWeight] = useState('');
   const [generatedDose, setGeneratedDose] = useState('');
   const handleCalculate = () => {
-      const dose = '**Numb***';
-    setGeneratedDose(dose);
-  };
+      const weight = parseFloat(patientWeight);
+      if (isNaN(weight)) {
+        alert("Please enter a valid weight.");
+        return;
+      }
+    
+      let dose;
+    
+      if (weight >= 5 && weight <= 20) {
+        dose = 600;
+      } else if (weight >= 21 && weight <= 40) {
+        dose = 1800;
+      } else if (weight >= 41 && weight <= 60) {
+        dose = 3600;
+      } else if (weight >= 61 && weight <= 80) {
+        dose = 4200;
+      } else if (weight > 80) {
+        dose = 4800;
+      } else {
+        alert("Invalid weight range.");
+        return;
+      }
+    
+      const numberOfVials = Math.ceil(dose / 300); // Calculate the number of vials
+    
+      setGeneratedDose({ dose, numberOfVials });
+    };
 
   // const redirectToGoogleAuthentication = () => {
   //   const googleAuthenticationURL = 'https://accounts.google.com'; 
@@ -47,13 +71,13 @@ function HomePage() {
             <thead>
               <tr>
                 <th>Dose (mg)</th>
-                <th>{generatedDose} mg</th>
+                <th>{generatedDose.dose} mg</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>100 mg/mL formulation vials</td>
-                <td>{generatedDose} 100 mg/mL formulation vials</td>
+                <td>{generatedDose.numberOfVials} vials of 100 mg/mL formulation </td>
               </tr>
             </tbody>
           </table>

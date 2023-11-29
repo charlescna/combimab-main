@@ -349,3 +349,22 @@ code {
     transform: rotate(360deg);
   }
 }
+
+.form-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  color: #333; /* Adjust the color as needed */
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-input {
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  width: 100%; /* Adjust the width as needed */
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
