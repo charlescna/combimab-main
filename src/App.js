@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import HcpRegistration from "./Pages/HcpRegistration";
 import TreatmentCalendar from './Pages/TreatmentCalendar';
+import Preperation from "./Pages/Preperation";
 
 
 function App() {
@@ -20,6 +21,12 @@ function App() {
           <div id="Calculation">
             <Routes>
               <Route path="/hcp-support-button" element={<HcpRegistration/>}/>
+            </Routes>
+          </div>
+
+          <div id="prep">
+            <Routes>
+              <Route path="/PreparationGuidance" element={<Preperation />} />
             </Routes>
           </div>
 
