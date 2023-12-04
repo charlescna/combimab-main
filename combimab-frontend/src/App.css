@@ -363,8 +363,11 @@ code {
   font-size: 16px;
   margin-top: 5px;
   margin-bottom: 15px;
-  width: 100%; /* Adjust the width as needed */
+  width: 100%; 
   box-sizing: border-box;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+.custom-navbar-color {
+  background-color: rgb(61, 177, 164); 
 }

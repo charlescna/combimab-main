@@ -1,13 +1,12 @@
 
 
 
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { Navigate ,Link } from "react-router-dom";
+import { useSearchParams } from 'react-router-dom';
 import '../App.css';
-// import { GoogleLoginButton } from "react-social-login-buttons";
-// import { LoginSocialGoogle } from "reactjs-social-login";
-
-function HomePage() {
+const HomePage = ()=> 
+    {
   const [patientWeight, setPatientWeight] = useState('');
   const [generatedDose, setGeneratedDose] = useState('');
   const handleCalculate = () => {
@@ -32,22 +31,10 @@ function HomePage() {
       } else {
         alert("Invalid weight range.");
         return;
-      }
-    
-      const numberOfVials = Math.ceil(dose / 300); // Calculate the number of vials
-    
+      }    
+      const numberOfVials = Math.ceil(dose / 300);     
       setGeneratedDose({ dose, numberOfVials });
     };
-
-  // const redirectToGoogleAuthentication = () => {
-  //   const googleAuthenticationURL = 'https://accounts.google.com'; 
-  //   window.location.href = googleAuthenticationURL;
-  // };
-
-  // const showGoogleAuthComponent = () => {
-  //   setShowGoogleAuth(true);
-  // };
-
   return (
     <div className="homepage-container">
       <h1>Combimab Rare Disease Dose Management App</h1>
@@ -82,35 +69,10 @@ function HomePage() {
             </tbody>
           </table>
           <p>For Health Care professionals support to have infusion specifications</p>
-          <p>Steps for preparation, Calendar generation please click HCP Support </p>
-
-          
-          {/* <button className="hcp-support-button" onClick={showGoogleAuthComponent}> */}
-          <Link to="/HcpRegisteration">
-          <button className="hcp-support-button">
-                  HCP Support
-          </button> </Link>
-         
-{/*           
-          {showGoogleAuth && (
-            <div>
-              <LoginSocialGoogle
-                client_id={"102495660704-402m26dsokb0rk6ljbslj0t59boi4dfu.apps.googleusercontent.com"}
-                scope="openid profile email"
-                discoveryDocs="claims_supported"
-                access_type="offline"
-                onResolve={({ provider, data }) => {
-                  console.log(provider, data);
-                }}
-                onReject={(err) => {
-                  console.log(err);
-                }}
-              >
-                <GoogleLoginButton />
-              </LoginSocialGoogle>
-            </div>
-          )} */}
-
+          <p>Steps for preparation, Calendar generation please login </p>
+          <Link to="/loginpage">
+            <button className="hcp-support-button">login</button>
+          </Link>       
           <p className="disclaimer">This web App is not for medical purpose. All information here is dummy data and is done as a project for students in CAN for CP3540.</p>
         </div>
       </div>
