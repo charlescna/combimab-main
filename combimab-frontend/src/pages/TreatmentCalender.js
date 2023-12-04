@@ -113,7 +113,7 @@ const TreatmentCalendar = () => {
             ))}
           </div>
 
-          <button>Download Safety Card</button>
+  
         </div>
       )}
     </div>

@@ -1,101 +1,112 @@
-import React, { useState } from "react";
-import { Link ,Navigate,useNavigate} from "react-router-dom";
-import '../App.css';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams, Navigate } from 'react-router-dom';
+
+const HCPRegisteration = ()=> {
+  return (<h1>Welcome</h1>
+
+  );
+}
+export default HCPRegisteration;
 
 
 
-const HcpRegistration = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    speciality: '',
-    zipcode: '',
-  });
 
-  const [registrationMessage, setRegistrationMessage] = useState('');
-
-  const history = useNavigate(); 
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('User registered successfully:', data);
-        setRegistrationMessage('User registered successfully');
-        Navigate('/InfusionSpecification');
-      } else {
-        console.error('Error registering user');
-        setRegistrationMessage('Error registering user');
-        
-      }
-    } catch (error) {
-      console.error('Error registering user:', error);
-      setRegistrationMessage('Error registering user');
-      
+export function UserList( {users, setUsers} ) {
+  // Check if there is a query parameter "token", and if there is, store it in local storage
+  const [searchParams, setSearchParams] = useSearchParams();
+  const oauthToken = searchParams.get('token');
+  if (oauthToken) {
+      localStorage.setItem('token', oauthToken);
+      searchParams.delete('token');
+      setSearchParams(searchParams);
     }
-  };
-  
-    return (
-      <div className="homepage-container">
-        <h1>HCP Registeration Form</h1>
-        {registrationMessage && <p>{registrationMessage}</p>}
-        <form onSubmit={handleSubmit}>
-        <label className="form-label">
-          First Name:
-          <input type="text" name="firstName" value={formData.firstName} onChange={handleChange}className="form-input" />
-        </label>
-        <br />
-        <label>
-          Last Name:
-          <input type="text" name="lastName" value={formData.lastName} onChange={handleChange}className="form-input" />
-        </label>
-        <br />
-        <label className="form-label">
-          Email:
-          <input type="email" name="email" value={formData.email} onChange={handleChange}className="form-input" />
-        </label>
-        <br />
-        <label className="form-label">
-          Phone Number:
-          <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange}className="form-input" />
-        </label>
-        <br />
-        <label className="form-label">
-          Speciality:
-          <input type="text" name="speciality" value={formData.speciality} onChange={handleChange} className="form-input"/>
-        </label>
-        <br />
-        <label className="form-label">
-          Zipcode:
-          <input type="text" name="zipcode" value={formData.zipcode} onChange={handleChange} className="form-input" />
-        </label>
-        <br />
-        <button type="REGISTER" className="GUIDANCE">REGISTER</button>
-      </form>
 
-        <Link to="/InfusionSpecification" className="GUIDANCE">
-          Calcuate Infusion
-        </Link>
+    useEffect( () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer "+localStorage.getItem('token'));
 
-      </div>
-    );
-  };
-  
-  export default HcpRegistration;
-  
+      const requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
+      fetch("/api/users", requestOptions)
+      .then(
+          
+          response =>  {
+              if( !response.ok) {
+                  let code = response.status.toString();
+                  throw new Error( `${code} ${response.statusText}`);
+              }
+              return response.json();
+
+      })
+        .then(users => setUsers(users))
+        .catch( e => {
+            console.log("Error!!!");
+            console.log(e.message);
+            localStorage.clear();
+            return (<Navigate to="/loginPage" replace={true} />)    
+        });
+        
+      }, [])
+    
+      const token = localStorage.getItem('token');
+
+
+      if( !token) {
+          return (<Navigate to="/InfusionSpecification" replace={true} />)
+          
+      }
+      else {
+          
+            if( users == null ) return;
+          
+        
+            return (
+                <div>
+                  <h1>HCPRegisteration Form</h1>
+                  {users.map((user, i) => {
+                    return <Users name={user.name} users={users} setUsers={setUsers}/> 
+                })}
+                  
+                </div>
+              
+              )
+        }
+    }
+
+    function Users( {name, users, setUsers} ) {
+
+
+        return (
+            <div>
+              
+                <p>Welcome,{name}</p>
+                
+                <button onClick={ () => {
+                
+                    var myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    
+                    var urlencoded = new URLSearchParams();
+                    urlencoded.append("FirstName", name);
+    
+                    var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: urlencoded,
+                    redirect: 'follow'
+                    };
+    
+                    fetch("/api/removeUser", requestOptions)
+                    .then(response => response.json())
+                    .then( setUsers )
+
+                    .catch(error => console.log('error', error));
+                } }>Remove</button>
+            </div>
+            
+        );
+    } 
