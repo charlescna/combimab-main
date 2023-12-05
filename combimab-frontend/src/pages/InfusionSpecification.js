@@ -17,25 +17,58 @@ const InfusionSpecification = ()=> {
         //Assume basic and simple calc
 
         const weight = parseFloat(patientWeight);
-        const dose = weight * 100; //fixed does of 100 mg per kg
+        if (isNaN(weight)) {
+          alert("Please enter a valid weight.");
+          return;
+        }
+    
+        let dose;
+    
+        if (weight >= 5 && weight <= 20) {
+          dose = 600;
+        } else if (weight >= 21 && weight <= 40) {
+          dose = 1800;
+        } else if (weight >= 41 && weight <= 60) {
+          dose = 3600;
+        } else if (weight >= 61 && weight <= 80) {
+          dose = 4200;
+        } else if (weight > 80) {
+          dose = 4800;
+        } else {
+          alert("Invalid weight range.");
+          return;
+        }
 
-        const calculatedMab = dose / 2; //assume half of dose
-        const calculatedNacl = dose / 2; //other half of dose
-        const calculatedTotal = calculatedMab + calculatedNacl;
+    const numberOfVials = Math.ceil(dose / 300);
+    const calculatedMabVolume = numberOfVials * 30;
+    const calculatedNaclVolume = calculatedMabVolume;
+    const calculatedTotalVolume = calculatedMabVolume + calculatedNaclVolume;
 
+    let calculatedInfusionTime;
+    if (calculatedTotalVolume <= 120) {
+      calculatedInfusionTime = 3;
+    } else if (calculatedTotalVolume <= 360) {
+      calculatedInfusionTime = 2;
+    } else if (calculatedTotalVolume <= 720) {
+      calculatedInfusionTime =1.3;
+    } else if (calculatedTotalVolume <= 840) {
+      calculatedInfusionTime = 1.7;
+    } else if (calculatedTotalVolume <= 960) {
+      calculatedInfusionTime =1.8  
+      
+    } 
 
-        const calculatedInfusionTime = 2;//e.g  infusion time in hours
-        const calculatedInfusionRate = calculatedTotal / calculatedInfusionTime; // ml per hour
+    const calculatedInfusionRate = calculatedTotalVolume / calculatedInfusionTime;
 
-    setMabVolume(calculatedMab.toFixed(2));
-    setNaclVolume(calculatedNacl.toFixed(2));
-    setTotalVolume(calculatedTotal.toFixed(2));
-    setInfusionTime(calculatedInfusionTime);
+    setMabVolume(calculatedMabVolume.toFixed(2));
+    setNaclVolume(calculatedNaclVolume.toFixed(2));
+    setTotalVolume(calculatedTotalVolume.toFixed(2));
+    setInfusionTime(calculatedInfusionTime.toFixed(2));
     setInfusionRate(calculatedInfusionRate.toFixed(2));
   };
-    
 
     return (
+      
         <div className="homepage-container">
         <h1>HCP Support - Weight based</h1>
   
@@ -83,14 +116,15 @@ const InfusionSpecification = ()=> {
           </tr>
         </tbody>
       </table>
+      <div>
+        <Link to="/TreatmentCalender">
+          <button className="CALENDAR">Treatment Calendar</button>
+        </Link>
+        <Link to="/PreparationGuidance">
+          <button className="GUIDANCE">Preperation Steps</button>
+        </Link>
+      </div>
 
-      <Link to="/TreatmentCalender">
-        <button className="CALENDAR">CALENDAR</button>
-      </Link>
-
-      <Link to="/PreparationGuidance">
-        <button className="GUIDANCE">PREPARATION</button>
-      </Link>
     </div>
   );
 };

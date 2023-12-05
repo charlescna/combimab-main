@@ -10,9 +10,27 @@ import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import { google} from 'googleapis';
 import { error } from 'console';
+import { connectToDatabase,getCollection } from './db.js';
+
+const app = express();
+const PORT = 4000;
 
 
+connectToDatabase();
 
+app.post('/api/register', async (req, res) => {
+  try {
+    const formData = req.body;
+
+    const collection = getCollection();
+    await collection.insertOne();
+
+    res.status(200).json({ success: true, message: 'Registration successful!' });
+  } catch (error) {
+    console.error('Error in registration:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
 const oauthClient = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
@@ -34,14 +52,16 @@ const getGoogleOauthURL = () => {
 
 const googleOauthURL = getGoogleOauthURL();
 
+
+
+
 // Serve static files
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../build')));
-const PORT = 4000;
+
 
 app.get(/^(?!\/api).+/, (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
@@ -91,7 +111,7 @@ app.get('/api/google/oauth/', async (req, res) => {
         }
         res.cookie('jwt', token, { httpOnly: true, secure: true });
         //redirect the user to the login page with JWT attached
-        return res.redirect(`http://localhost:3000/HCPregisteration`);
+        return res.redirect(`http://localhost:3000/InfusionSpecification`);
       });
     })
     .catch(error => {

@@ -7,19 +7,20 @@ import { LoginPage } from './pages/LoginPage';
 
 import About from './pages/About';
 import InfusionSpecification from './pages/InfusionSpecification';
-import HcpRegisteration from './pages/HcpRegisteration';
+import HCPRegistration from './pages/HCPRegistration'
 import PreparationGuidance from './pages/PreparationGuidance';
 import TreatmentCalnder from './pages/TreatmentCalender';
 import NotFoundPage from './pages/NotFoundPage';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { UserList } from './pages/HcpRegisteration';
+import { UserList } from './pages/HCPRegistration';
 import { useState } from 'react';
 
 
 function App(){
 
-const [users, setUsers] = useState(null);
+// const [users, setUsers] = useState(null);
+
 
   return (
       <BrowserRouter>
@@ -30,12 +31,12 @@ const [users, setUsers] = useState(null);
               <Route path ="/" element={<HomePage/>} />
               <Route path="/About" element={<About/>} /> 
               <Route path="/loginpage" element={<LoginPage/>} /> 
-              <Route path="/Hcpregisteration" element={<HcpRegisteration />} />
+              <Route path="/Hcpregisteration" element={< HCPRegistration/>} />
               <Route path="/InfusionSpecification" element={<InfusionSpecification />} />
               <Route path="/PreparationGuidance" element={<PreparationGuidance />} />
               <Route path="/TreatmentCalender" element={<TreatmentCalnder/>} />  
               <Route path="*" element={<NotFoundPage/>} />
-              {/* <Route path="/HcpRegisteration" element={<UserList users={users} setUsers={setUsers}/>}/> */}
+              
                               
             </Routes>
           </div>
