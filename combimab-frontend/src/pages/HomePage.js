@@ -70,8 +70,8 @@ const HomePage = ()=>
           </table>
           <p>For Health Care professionals support to have infusion specifications</p>
           <p>Steps for preparation, Calendar generation please login </p>
-          <Link to="/loginpage">
-            <button className="hcp-support-button">login</button>
+          <Link to="/Hcpregisteration">
+            <button className="hcp-support-button">HCP Registration</button>
           </Link>       
           <p className="disclaimer">This web App is not for medical purpose. All information here is dummy data and is done as a project for students in CAN for CP3540.</p>
         </div>
