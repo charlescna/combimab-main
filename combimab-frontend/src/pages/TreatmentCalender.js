@@ -65,10 +65,7 @@ const TreatmentCalendar = () => {
 
       {/*Add a back button to go to the home page */}
 
-      <Link to='/'>
-        <button className="back-button">Back to Home</button>
-      </Link>
-
+  
       <div className='form-container'>
         <label>Patient Weight</label>
         <input
@@ -97,10 +94,14 @@ const TreatmentCalendar = () => {
         </select>
 
         <button onClick={handleGenerateCalendar}>Generate Calendar</button>
+
+
       </div>
 
       {calendarGenerated && (
         <div>
+
+
           <div className='calendar-container'>
             <h2>Treatment Regimen Calendar</h2>
           </div>
@@ -113,9 +114,19 @@ const TreatmentCalendar = () => {
             ))}
           </div>
 
-          <button>Download Safety Card</button>
+  
         </div>
       )}
+         <div>
+         <Link to="/InfusionSpecification">
+          <button className="CALENDAR">Infusion information</button>
+         </Link>
+
+         <Link to="/PreparationGuidance">
+          <button className="GUIDANCE">Preperation Steps</button>
+         </Link>
+         </div>
+
     </div>
   );
 };
