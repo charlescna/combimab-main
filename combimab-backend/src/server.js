@@ -1,29 +1,40 @@
 import 'dotenv/config';
 import express from 'express';
 import bodyParser from 'body-parser';
-import { MongoClient } from 'mongodb';
 import fetch from 'node-fetch';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import https from 'https';
-import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import { google} from 'googleapis';
 import { error } from 'console';
 import { connectToDatabase,getCollection } from './db.js';
+import mongoose from 'mongoose';
 
 const app = express();
 const PORT = 4000;
 
 
 connectToDatabase();
+const User = getCollection();
+// Serve static files
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json(path.join(__dirname, '../build')));
 
 app.post('/api/register', async (req, res) => {
   try {
     const formData = req.body;
-
-    const collection = getCollection();
-    await collection.insertOne();
+    console.log(formData); 
+    const newUser = new User({
+      name:formData.name,
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      address: formData.address,
+      specialty: formData.specialty
+    });
+    await newUser.save();
 
     res.status(200).json({ success: true, message: 'Registration successful!' });
   } catch (error) {
@@ -31,6 +42,7 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
+
 const oauthClient = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
@@ -55,12 +67,7 @@ const googleOauthURL = getGoogleOauthURL();
 
 
 
-// Serve static files
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, '../build')));
 
 
 app.get(/^(?!\/api).+/, (req, res) => {

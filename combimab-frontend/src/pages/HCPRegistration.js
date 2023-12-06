@@ -3,59 +3,59 @@ import { useSearchParams, Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 
-export function UserList( {users, setUsers} ) {
-  // Check if there is a query parameter "token", and if there is, store it in local storage
-  const [searchParams, setSearchParams] = useSearchParams();
-  const oauthToken = searchParams.get('token');
-  if (oauthToken) {
-      localStorage.setItem('token', oauthToken);
-      searchParams.delete('token');
-      setSearchParams(searchParams);
-    }
+// export function UserList( {users, setUsers} ) {
+//   // Check if there is a query parameter "token", and if there is, store it in local storage
+//   const [searchParams, setSearchParams] = useSearchParams();
+//   const oauthToken = searchParams.get('token');
+//   if (oauthToken) {
+//       localStorage.setItem('token', oauthToken);
+//       searchParams.delete('token');
+//       setSearchParams(searchParams);
+//     }
 
-    useEffect( () => {
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer "+localStorage.getItem('token'));
+//     useEffect( () => {
+//         var myHeaders = new Headers();
+//         myHeaders.append("Authorization", "Bearer "+localStorage.getItem('token'));
 
-      const requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow',
-      };
+//       const requestOptions = {
+//         method: 'GET',
+//         headers: myHeaders,
+//         redirect: 'follow',
+//       };
 
-      fetch("/api/users", requestOptions)
-      .then(
+//       fetch("/api/users", requestOptions)
+//       .then(
           
-          response =>  {
-              if( !response.ok) {
-                  let code = response.status.toString();
-                  throw new Error( `${code} ${response.statusText}`);
-              }
-              return response.json();
+//           response =>  {
+//               if( !response.ok) {
+//                   let code = response.status.toString();
+//                   throw new Error( `${code} ${response.statusText}`);
+//               }
+//               return response.json();
 
-      })
-        .then(users => setUsers(users))
-        .catch( e => {
-            console.log("Error!!!");
-            console.log(e.message);
-            localStorage.clear();
-            return (<Navigate to="/loginPage" replace={true} />)    
-        });
+//       })
+//         .then(users => setUsers(users))
+//         .catch( e => {
+//             console.log("Error!!!");
+//             console.log(e.message);
+//             localStorage.clear();
+//             return (<Navigate to="/loginPage" replace={true} />)    
+//         });
         
-      }, [])
+//       }, [])
     
-      const token = localStorage.getItem('token');
+//       const token = localStorage.getItem('token');
 
 
-      if( !token) {
-          return (<Navigate to="/InfusionSpecification" replace={true} />)
+//       if( !token) {
+//           return (<Navigate to="/InfusionSpecification" replace={true} />)
           
-      }
-      else {
+//       }
+//       else {
           
-            if( users == null ) return;       
-      }
-    }
+//             if( users == null ) return;       
+//       }
+//     }
 
 
 
@@ -130,14 +130,12 @@ const HCPRegistration = () => {
           <label>Specialty:</label>
           <input type="text" name="specialty" value={formData.specialty} onChange={handleInputChange} />
         </div>
-
-
-      
+   
       <button type="submit" className="CALENDAR">Register</button>    
     </form>  
 
     <Link to="/loginpage">
-      <button className="GUIDANCE">Google Sgin in</button>
+      <button type="submit" className="GUIDANCE">Google Sgin in</button>
     </Link>
  
       

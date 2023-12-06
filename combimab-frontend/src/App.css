@@ -371,14 +371,3 @@ code {
 .custom-navbar-color {
   background-color: rgb(61, 177, 164); 
 }
-.homepage-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh; /* This ensures that the container takes the full height of the viewport */
-}
-
-.calculator-bar {
-  margin-top: 20px; /* Add some top margin to the calculator bar */
-}
