@@ -38,23 +38,19 @@ export function LoginPage() {
     }
 
 
-    return ( 
-    <>
-    <button disabled = {!googleURL} onClick={onLoginClicked} >
-        
-        Login with Google
-
-    </button>
-    <br></br>
-    <button onClick={onLogOutClicked} >
-        
-        Logout
-
-    </button>
-    <br>
-    </br>
-    
-    </> )
-}
+    return (
+        <div className="dose-table">
+          <h2>Welcome to Combimab!</h2>
+          <p>Please log in to access Dose Managmet</p>
+          <button class="hcp-support-button" disabled={!googleURL} onClick={onLoginClicked}>
+            Login with Google
+          </button>
+          <br />
+          <button class="hcp-support-button" onClick={onLogOutClicked}>Logout</button>
+          <br />
+          {/* You can add a message div for success or error messages */}
+        </div>
+      );
+    }
 
 

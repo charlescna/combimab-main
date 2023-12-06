@@ -116,9 +116,9 @@ app.get('/api/google/oauth/', async (req, res) => {
         if (err) {
             res.status(500).json(error);
         }
-        res.cookie('jwt', token, { httpOnly: true, secure: true });
+        // res.json('jwt', token, { httpOnly: true, secure: true });
         //redirect the user to the login page with JWT attached
-        return res.redirect(`http://localhost:3000/InfusionSpecification`);
+        return res.redirect(`http://localhost:3000/Hcpregisteration?token=${token}`);
       });
     })
     .catch(error => {
