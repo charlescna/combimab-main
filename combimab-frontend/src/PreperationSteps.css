@@ -1,0 +1,41 @@
+/*.container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 10px;
+    margin: 20px;
+  }
+  
+  .layout {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .images {
+    grid-column: span 6;
+    padding: 10px;
+  }
+  
+  .descriptions {
+    grid-column: span 6;
+    padding: 10px;
+  }
+  
+  .description {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .image-gallery-slide img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .image-gallery-thumbnails-container {
+    display: none; /* Hide thumbnails 
+  }
+*/

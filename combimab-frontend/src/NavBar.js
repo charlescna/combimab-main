@@ -20,8 +20,16 @@ const NavBar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/loginpage">Sgin in</Link>
               </li>
-             
-      
+              <li className="nav-item">
+              <Link className="nav-link" to="/PreparationGuidance">
+                Guidance
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/TreatmentCalender">
+                Calendar
+              </Link>
+            </li>
             </ul>
           </div>
         </div>

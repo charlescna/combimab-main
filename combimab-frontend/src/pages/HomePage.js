@@ -1,6 +1,4 @@
 
-
-
 import { useState, useEffect } from 'react';
 import { Navigate ,Link } from "react-router-dom";
 import { useSearchParams } from 'react-router-dom';
@@ -9,6 +7,7 @@ const HomePage = ()=>
     {
   const [patientWeight, setPatientWeight] = useState('');
   const [generatedDose, setGeneratedDose] = useState('');
+
   const handleCalculate = () => {
       const weight = parseFloat(patientWeight);
       if (isNaN(weight)) {
@@ -41,19 +40,19 @@ const HomePage = ()=>
       <div className="box">
         <img src="HomePagePhoto.png" alt="Bio" />
 
-            <div className="box-content">
-              <h2>COMBIMAB IS</h2>
-              <p>Weight-based Nmab® 300 mg/3mL dosing calculator for patients with PN</p>
-              <div className="calculator-bar">
-                <label>Patient weight:</label>
-                <input
-                  type="text"
-                  value={patientWeight}
-                  onChange={(e) => setPatientWeight(e.target.value)}
-                  placeholder="patient weight in Kg"
-                />
-                <button onClick={handleCalculate}>CALCULATE</button>
-              </div>
+        <div className="box-content">
+          <h2>COMBIMAB IS</h2>
+          <p>Weight-based Nmab® 300 mg/3mL dosing calculator for patients with PN</p>
+          <div className="calculator-bar">
+            <label>Patient weight:</label>
+            <input
+              type="text"
+              value={patientWeight}
+              onChange={(e) => setPatientWeight(e.target.value)}
+              placeholder="patient weight in Kg"
+            />
+            <button onClick={handleCalculate}>CALCULATE</button>
+          </div>
           <table className="dose-table">
             <thead>
               <tr>
