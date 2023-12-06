@@ -177,13 +177,15 @@ code {
 }
 /* Dose table styles */
 .dose-table {
-  width: 100%;
-  margin-top: 10px;
-  border-collapse: collapse;
- color: rgb(61, 177, 164);
- border: 1px solid rgb(61, 177, 164);
+  width: 80%;
+  max-width: 600px;
+  margin: 30px auto 20px;
+  padding: 20px;
+  border: 1px solid rgb(61, 177, 164);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  
 }
-
 .dose-table th,
 .dose-table td {
   font-family: 'Roboto', sans-serif;
@@ -195,6 +197,24 @@ code {
 
 .dose-table th {
   background-color: rgb(240, 240, 240); /* Light gray */
+}
+.dose-table div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 20px;
+}
+label {
+  flex: 1; /* Take up 50% of the width to keep the label beside the input */
+  text-align: left;
+}
+input {
+  flex: 2; /* Take up 50% of the width to keep the input beside the label */
+  width: 100%;
+  padding: 8px; /* Adjust padding as needed */
+  box-sizing: border-box;
+  border: 1px solid #ccc; /* Add a border for better visibility */
+  border-radius: 4px;
 }
 .hcp-support-button {
   font-family: 'Roboto', sans-serif;
@@ -371,3 +391,12 @@ code {
 .custom-navbar-color {
   background-color: rgb(61, 177, 164); 
 }
+.login-container {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* You can adjust the shadow properties */
+  background-color: #ffffff; /* You can set the background color */
+}
+
