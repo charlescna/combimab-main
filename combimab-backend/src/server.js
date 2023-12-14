@@ -23,10 +23,23 @@ const __dirname = path.dirname(__filename);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json(path.join(__dirname, '../build')));
 
+// handles user registration by receiving POST requests with user data and saving it to the database
 app.post('/api/register', async (req, res) => {
   try {
     const formData = req.body;
-    console.log(formData); 
+    const existingUser = await User.findOne({ email: formData.email });
+    if (existingUser) {
+      // If the user already exists, send back userExists flag and user data
+      res.status(200).json({
+        success: true,
+        userExists: true,
+        userData: {
+          name: existingUser.name,
+          email: existingUser.email,
+        },
+      });
+    } else {
+    
     const newUser = new User({
       name:formData.name,
       email: formData.email,
@@ -35,14 +48,14 @@ app.post('/api/register', async (req, res) => {
       specialty: formData.specialty
     });
     await newUser.save();
-
-    res.status(200).json({ success: true, message: 'Registration successful!' });
-  } catch (error) {
+    res.status(200).json({ success: true, userExists: false, message: 'Registration successful!' });
+  }
+} catch (error) {
     console.error('Error in registration:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
-
+// set up a Google OAuth client and defines a function to generate the Google OAuth URL.
 const oauthClient = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
@@ -79,9 +92,11 @@ const getAccessAndBearerTokenUrl = ({ access_token }) =>
   `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`;
 
 
-// Google OAuth callback route
+//handles the callback from Google OAuth, obtains tokens, 
+//fetches user information, generates a JWT, and redirects the user to a login page with the JWT attached.
 app.get('/api/google/oauth/', async (req, res) => {
-  console.log("Hit callback route");
+
+  try{
 
     const { code } = req.query;
     console.log(code);
@@ -98,35 +113,51 @@ app.get('/api/google/oauth/', async (req, res) => {
     const bearerToken = "Bearer "+tokens.id_token;
     myHeaders.append("Authorization", bearerToken);
 
-   const requestOptions = {
-     method: 'GET',
-     headers: myHeaders,
-     redirect: 'follow'
-   };
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'  };
 
+    const response = await fetch(url, requestOptions);
+    const result = await response.json();   
+    console.log(result)
+    // Check if the user's email already exists in the database
+    const existingUser = await User.findOne({ email: result.email });
 
-    fetch(url, requestOptions)
-    .then(response => response.json())
-    .then(result =>  {
-      console.log(result)
-      
-      //generate JWT
-      const user  = { email: result.email, name: result.name }; 
-      jwt.sign( user, process.env.JWT_SECRET, { expiresIn: '2d' }, (err, token) => {
+    // If the user exists, display the email on the registration page
+    if (existingUser) {
+      jwt.sign({ email: result.email, name: result.name }, process.env.JWT_SECRET, { expiresIn: '2d' }, (err, token) => {
         if (err) {
-            res.status(500).json(error);
+          throw new Error('Error generating JWT token');
         }
-        // res.json('jwt', token, { httpOnly: true, secure: true });
+        res.redirect(`http://localhost:3000/Hcpregisteration?token=${token}`);
+      });
+    } else {
+
+    // If the user doesn't exist, save the email to the database
+    const newUser = new User({
+      name: result.name,
+      email: result.email,
+      // Add other user properties as needed
+    });
+    await newUser.save();
+    
+      //generate JWT
+      // const user  = { email: result.email, name: result.name }; 
+      jwt.sign({ email: result.email, name: result.name }, process.env.JWT_SECRET, { expiresIn: '2d' }, (err, token) => {
+        if (err) {
+          throw new Error('Error generating JWT token');
+        }
         //redirect the user to the login page with JWT attached
         return res.redirect(`http://localhost:3000/Hcpregisteration?token=${token}`);
       });
-    })
-    .catch(error => {
-      console.log('error', error);
-      res.status(500).json(err); 
-    });
-      
-  })
+    }
+  } catch (error ) {
+      console.log('Error in Google OAuth callback:', error);
+      res.status(500).json({ success: false, message: 'Error in Google OAuth callback', error: error.message });
+  }
+  });
+
   app.get('/api/google/oauthURL', (req, res) => {
     res.status(200).json({"url": googleOauthURL});
   })
@@ -154,7 +185,43 @@ app.get('/api/google/oauth/', async (req, res) => {
     }
   });
 
-
+  app.get('/api/userinfo', async (req, res) => {
+    try {
+      const { authorization } = req.headers;
+      
+      if (!authorization) {
+        return res.status(401).json({ success: false, message: 'Authorization header missing' });
+      }
+  
+      const token = authorization.split(' ')[1];
+      jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+        console.error('JWT Verification Error:', err);
+        if (err) {
+          return res.status(401).json({ success: false, message: 'Invalid token' });
+        }
+      const userEmail = decoded.email;
+      const user = await User.findOne({ email: userEmail });     
+      if (!user) {
+          return res.status(404).json({ success: false, message: 'User not found' });
+        }
+  
+        // Return user data
+        res.status(200).json({
+          success: true,
+          userData: {
+            name: user.name,
+            email: user.email,
+            // Add other user properties as needed
+          },
+        });
+      });
+    } catch (error) {
+      
+      console.error('Error in /api/userinfo:', error);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+  });
+  
   
 
 
