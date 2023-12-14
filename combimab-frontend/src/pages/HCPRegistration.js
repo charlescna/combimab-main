@@ -1,62 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, Navigate } from 'react-router-dom';
+// import { useSearchParams, Navigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
-
-export function UserList( {users, setUsers} ) {
-  // Check if there is a query parameter "token", and if there is, store it in local storage
-  const [searchParams, setSearchParams] = useSearchParams();
-  const oauthToken = searchParams.get('token');
-  if (oauthToken) {
-      localStorage.setItem('token', oauthToken);
-      searchParams.delete('token');
-      setSearchParams(searchParams);
-    }
-
-    useEffect( () => {
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer "+localStorage.getItem('token'));
-
-      const requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow',
-      };
-
-      fetch("/api/register", requestOptions)
-      .then(
-          
-          response =>  {
-              if( !response.ok) {
-                  let code = response.status.toString();
-                  throw new Error( `${code} ${response.statusText}`);
-              }
-              return response.json();
-
-      })
-        .then(users => setUsers(users))
-        .catch( e => {
-            console.log("Error!!!");
-            console.log(e.message);
-            localStorage.clear();
-            return (<Navigate to="/loginPage" replace={true} />)    
-        });
-        
-      }, [])
-    
-      const token = localStorage.getItem('token');
-
-
-      if( !token) {
-          return (<Navigate to="/Hcpregisteration" replace={true} />)
-          
-      }
-      else {
-          
-            if( users == null ) return;       
-      }
-    }
-
 
 
 
@@ -68,24 +12,82 @@ const HCPRegistration = () => {
     address: '',
     specialty: '',
   });
-const [registrationSuccess, setRegistrationSuccess] = useState(false);  
+  const [userData, setUserData] = useState({});/** */
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [userExists, setUserExists] = useState(false);
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const isFormValid = () => {
+  // Check if there is a token in local storage
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+  console.log('Token:', token);
 
-    return (
-      formData.name.trim() !== '' &&
-      formData.email.trim() !== '' &&
-      formData.email.includes('@') && // Check for @ in email
-      formData.phoneNumber.trim() !== '' &&
-      !isNaN(formData.phoneNumber) && // Check if phone number contains only numbers
-      formData.address.trim() !== '' &&
-      formData.specialty.trim() !== ''
+  useEffect(() => {
+    console.log('Fetching user data...');
+    
+    const fetchUserData = async () => {
+      if (!token) {
+        console.log('No token found in URL parameters. Aborting fetch.');
+        return;
+      } 
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    try {
+      const response = await fetch('/api/userinfo', requestOptions);
+        if (!response.ok) {
+          let code = response.status.toString();
+          throw new Error(`${code} ${response.statusText}`);
+        }
+        const userData = await response.json();
+        
+        console.log('User Data Received:', userData);
+        console.log('Render - userData:', userData);
+
+
+        setUserData(userData);
+        setUserExists(true);
+      } catch (e) {
+        console.log('Error fetching user data:', e.message);
+        localStorage.clear();
+        //direct to login
+      }
+    };
+
+
+    fetchUserData();
+  }, [token]);
+
+  useEffect(() => {
+    console.log('formDataall:', formData);
+  }, [formData]);
+
+  useEffect(() => {
+    // Update the form data when user data is available
+    if (userExists) {
+      setFormData((prevData) => ({
+        ...prevData,
+        name: userData.name || '',
+        email: userData.email || '',
+      }));
+    }
+  }, [userExists, userData]);
+
+const isFormValid = () => {
+  return (
+    formData.phoneNumber.trim() !== '' &&
+    !isNaN(formData.phoneNumber) && // Check if phone number contains only numbers
+    formData.address.trim() !== '' &&
+    formData.specialty.trim() !== ''
     );
   };
 
+        
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid()) {
@@ -94,24 +96,27 @@ const [registrationSuccess, setRegistrationSuccess] = useState(false);
     }
 
     try {
+      const {name,email, ...formDataWithoutName } = formData;
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formDataWithoutName),
       });
 
       if (response.ok) {
-        // Handle success, show a success message, etc.
         setRegistrationSuccess(true);
       } else {
-        // Handle errors
         console.error('Registration failed.');
       }
     } catch (error) {
       console.error('Error:', error);
     }
+  };
+
+  const handleInputChange = (e) => {
+    setFormData((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));
   };
 
   return (
@@ -131,50 +136,75 @@ const [registrationSuccess, setRegistrationSuccess] = useState(false);
           </Link>
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>
-          <h2>Welcome to Combimab! Please fill in the details:</h2>
-          <table class="dose-table">
-            {/* Input fields for name, email, zip code, phone number, address, and specialty */}
+        <div>
+        {userExists && (
+       
+          <>
             <div>
               <label>Name:</label>
-              <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Enter your name"/>
+              <p>{formData?.name || 'Loading...'}</p>
+              
             </div>
-
             <div>
               <label>Email:</label>
-              <input type="text" name="email" value={formData.email} onChange={handleInputChange} placeholder="Enter your email (e.g., example@example.com)"/>
+              <p>{formData?.email || 'Loading...'}</p>
             </div>
-
-            <div>
-              <label>Phone Number:</label>
-
-
-              <input type="text"name="phoneNumber" value={formData.phoneNumber}onChange={handleInputChange}placeholder="Enter your phone number (numbers only)"/>
-            </div>
-
-            <div>
-              <label>Address:</label>
-              <input
-                type="text" name="address"value={formData.address} onChange={handleInputChange}placeholder="Enter your address" />
-            </div>
-
-            <div>
-              <label>Specialty:</label>
-              <input
-                type="text" name="specialty" value={formData.specialty} onChange={handleInputChange}placeholder="Enter your specialty"/>
-            </div>
-
-          
-              <button type="submit" className="CALENDAR">
-                Register
-              </button>
-            <div>    </div>
-            
+          </>
+        )}
+        <form onSubmit={handleSubmit}>
+          <h2>Welcome to Combimab! Please fill in the details:</h2>
+          <table className="dose-table">
+            <tbody>
+              <tr>
+                <td>
+                  <label>Phone Number:</label>
+                  <input
+                    type="text"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleInputChange}
+                    placeholder="Enter your phone number (numbers only)"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label>Address:</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    placeholder="Enter your address"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label>Specialty:</label>
+                  <input
+                    type="text"
+                    name="specialty"
+                    value={formData.specialty}
+                    onChange={handleInputChange}
+                    placeholder="Enter your specialty"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <button type="submit" className="CALENDAR">
+                    Register
+                  </button>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </form>
-      )}
-    </div>
-  );
+      </div>
+    )}
+  </div>
+);
 };
 
 export default HCPRegistration;
