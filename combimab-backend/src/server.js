@@ -133,7 +133,7 @@ app.get('/api/google/oauth/', async (req, res) => {
         if (err) {
           throw new Error('Error generating JWT token');
         }
-        res.redirect(`http://localhost:3000/Hcpregisteration?token=${token}`);
+        res.redirect(`http://localhost:3000/InfusionSpecification?token=${token}`);
       });
     } else {
 
