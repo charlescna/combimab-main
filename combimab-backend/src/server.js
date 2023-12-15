@@ -27,30 +27,32 @@ app.use(express.json(path.join(__dirname, '../build')));
 app.post('/api/register', async (req, res) => {
   try {
     const formData = req.body;
+    console.log('Received Request Body:', req.body);
     const existingUser = await User.findOne({ email: formData.email });
+
     if (existingUser) {
-      // If the user already exists, send back userExists flag and user data
+      // If the user already exists, update the existing document
+      existingUser.name = formData.name;
+      existingUser.phoneNumber = formData.phoneNumber;
+      existingUser.address = formData.address;
+      existingUser.specialty = formData.specialty;
+
+      await existingUser.save();
+
       res.status(200).json({
         success: true,
         userExists: true,
-        userData: {
-          name: existingUser.name,
-          email: existingUser.email,
-        },
+        userData: existingUser,
+        message: 'User data updated successfully!',
       });
     } else {
-    
-    const newUser = new User({
-      name:formData.name,
-      email: formData.email,
-      phoneNumber: formData.phoneNumber,
-      address: formData.address,
-      specialty: formData.specialty
-    });
-    await newUser.save();
-    res.status(200).json({ success: true, userExists: false, message: 'Registration successful!' });
-  }
-} catch (error) {
+      // If the user doesn't exist, create a new document
+      const newUser = new User(formData);
+      await newUser.save();
+
+      res.status(200).json({ success: true, userExists: false, message: 'Registration successful!' });
+    }
+  } catch (error) {
     console.error('Error in registration:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
