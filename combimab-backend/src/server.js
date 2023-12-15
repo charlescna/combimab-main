@@ -10,6 +10,7 @@ import { error } from 'console';
 import { connectToDatabase,getCollection } from './db.js';
 import mongoose from 'mongoose';
 
+
 const app = express();
 const PORT = 4000;
 
@@ -125,7 +126,7 @@ app.get('/api/google/oauth/', async (req, res) => {
     console.log(result)
     // Check if the user's email already exists in the database
     const existingUser = await User.findOne({ email: result.email });
-
+    // If the user exists, generatjwt display the email on the registration page
     // If the user exists, display the email on the registration page
     if (existingUser) {
       jwt.sign({ email: result.email, name: result.name }, process.env.JWT_SECRET, { expiresIn: '2d' }, (err, token) => {
@@ -148,11 +149,11 @@ app.get('/api/google/oauth/', async (req, res) => {
       // const user  = { email: result.email, name: result.name }; 
       jwt.sign({ email: result.email, name: result.name }, process.env.JWT_SECRET, { expiresIn: '2d' }, (err, token) => {
         if (err) {
-          throw new Error('Error generating JWT token');
-        }
-        //redirect the user to the login page with JWT attached
-        return res.redirect(`http://localhost:3000/Hcpregisteration?token=${token}`);
-      });
+        throw new Error('Error generating JWT token');
+      }
+             //redirect the user to the login page with JWT attached
+             return res.redirect(`http://localhost:3000/Hcpregisteration?token=${token}`);
+            });
     }
   } catch (error ) {
       console.log('Error in Google OAuth callback:', error);
@@ -179,8 +180,8 @@ app.get('/api/google/oauth/', async (req, res) => {
         if (err) {
           return res.status(400).json({ message: 'Unable to verify token' });
         }
-        console.log(decoded);
-      });
+      console.log(decoded);
+     });
     } catch (error) {
       console.error('Error in /api/loginPage:', error);
       res.status(500).json({ success: false, message: 'Internal server error' });
@@ -223,8 +224,21 @@ app.get('/api/google/oauth/', async (req, res) => {
       res.status(500).json({ success: false, message: 'Internal server error' });
     }
   });
-  
-  
+
+  app.post('/api/checkRegistration',async (req, res) => {
+    try {
+      const { token } = req.body;
+      const existingUser = await User.findOne ({email:token});
+      if (existingUser){
+        res.status(200).json({isUserRegistered : true});
+      } else{
+        res.status (200).json({isUserRegistered :false});
+      }
+    } catch (error){
+      console.error ('Eroor checking registeration:', error);
+      res.status (500).json({ssuccess: false,message:'server error'})
+    }  
+  });
 
 
 

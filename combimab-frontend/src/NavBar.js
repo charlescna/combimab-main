@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom"
-import React from "react";
+import React,{useState} from "react";
 import './App.css';
 
 
+
 const NavBar = () => {
-    return (
+     return (
       <nav className="navbar navbar-expand-lg navbar-dark custom-navbar-color">
         <div className="container-fluid justify-content-center">
           <Link className="navbar-brand" to="/">Combimab</Link>
@@ -14,11 +15,14 @@ const NavBar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/About">About</Link>
               </li>
-              {/* <li className="nav-item">
-                <Link className="nav-link" to="/HcpRegisteration">Registered</Link>
-              </li> */}
               <li className="nav-item">
-                <Link className="nav-link" to="/loginpage">Sgin in</Link>
+                <Link className="nav-link" to="/loginpage">Log In</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/logout">log Out</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/InfusionSpecification">Infusion Calculation</Link>
               </li>
               <li className="nav-item">
               <Link className="nav-link" to="/PreparationGuidance">
