@@ -19,6 +19,7 @@ const HCPRegistration = () => {
   // Check if there is a token in local storage
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
+  // urlParams.delete('token');consider delete token 
   console.log('Token:', token);
 
   useEffect(() => {
@@ -45,19 +46,23 @@ const HCPRegistration = () => {
           throw new Error(`${code} ${response.statusText}`);
         }
         const userData = await response.json();
-        
-        console.log('User Data Received:', userData);
-        console.log('Render - userData:', userData);
+        const updatedFormData = {
+          ...formData,
+          name: userData.userData.name,
+          email: userData.userData.email,     
+      };
+      setFormData(updatedFormData);
+      setUserData(userData);
+      setUserExists(true);
+      console.log('User Data Received:', userData); 
+    } catch (e) {
+      console.log('Error fetching user data:', e.message);
+      setUserExists(false);
+    }
+  };
 
-
-        setUserData(userData);
-        setUserExists(true);
-      } catch (e) {
-        console.log('Error fetching user data:', e.message);
-        localStorage.clear();
-        //direct to login
-      }
-    };
+   
+      console.log('Render - userData:', userData);
 
 
     fetchUserData();
@@ -67,18 +72,9 @@ const HCPRegistration = () => {
     console.log('formDataall:', formData);
   }, [formData]);
 
-  useEffect(() => {
-    // Update the form data when user data is available
-    if (userExists) {
-      setFormData((prevData) => ({
-        ...prevData,
-        name: userData.name || '',
-        email: userData.email || '',
-      }));
-    }
-  }, [userExists, userData]);
 
 const isFormValid = () => {
+  console.log('FormData:', formData);
   return (
     formData.phoneNumber.trim() !== '' &&
     !isNaN(formData.phoneNumber) && // Check if phone number contains only numbers
@@ -96,13 +92,12 @@ const isFormValid = () => {
     }
 
     try {
-      const {name,email, ...formDataWithoutName } = formData;
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formDataWithoutName),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
@@ -123,7 +118,7 @@ const isFormValid = () => {
     <div >
       {registrationSuccess ? (
         <div>
-          <h2>Welcome, {formData.name}! </h2>
+          <h2>Welcome, {userData.userData.name}! </h2>
           <p>Your registration was successful. What would you like to do next?</p>
           <Link to="/InfusionSpecification">
             <button className="GUIDANCE">Infusion Information</button>
@@ -137,17 +132,17 @@ const isFormValid = () => {
         </div>
       ) : (
         <div>
-        {userExists && (
+        {userExists &&  userData &&(
        
           <>
             <div>
               <label>Name:</label>
-              <p>{formData?.name || 'Loading...'}</p>
+              <p>{userData.userData?.name || 'Loading...'}</p>
               
             </div>
             <div>
               <label>Email:</label>
-              <p>{formData?.email || 'Loading...'}</p>
+              <p>{userData.userData?.email || 'Loading...'}</p>
             </div>
           </>
         )}

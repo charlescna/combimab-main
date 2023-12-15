@@ -18,11 +18,12 @@ const connectToDatabase = async () => {
 const getCollection = () => {
 
   const userSchema = new mongoose.Schema({
-    name:String,
-    email: String,
-    phoneNumber: String,
-    address: String,
-    specialty: String
+    name:{type:String, required:true},
+    email:{type:String, required:true},
+    phoneNumber: {type:String},
+    address:{type:String},
+    specialty:{type:String},
+ 
   });
 
   return mongoose.model('User', userSchema);
