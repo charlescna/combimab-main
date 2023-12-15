@@ -72,16 +72,6 @@ const HCPRegistration = () => {
     console.log('formDataall:', formData);
   }, [formData]);
 
-  // useEffect(() => {
-  //   // Update the form data when user data is available
-  //   if (userExists) {
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       name: userData.name || '',
-  //       email: userData.email || '',
-  //     }));
-  //   }
-  // }, [userExists, userData]);
 
 const isFormValid = () => {
   console.log('FormData:', formData);

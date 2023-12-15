@@ -140,7 +140,7 @@ app.get('/api/google/oauth/', async (req, res) => {
     const newUser = new User({
       name: result.name,
       email: result.email,
-      // Add other user properties as needed
+     
     });
     await newUser.save();
     
@@ -213,7 +213,7 @@ app.get('/api/google/oauth/', async (req, res) => {
           userData: {
             name: user.name,
             email: user.email,
-            // Add other user properties as needed
+          
           },
         });
       });
