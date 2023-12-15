@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom';
 
 
 
-const HCPRegistration = () => {
+const HCPRegistration = ({token, setToken}) => {
+  
+  
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,9 +21,12 @@ const HCPRegistration = () => {
 
   // Check if there is a token in local storage
   const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('token');
+  const paramToken = urlParams.get('token');
   // urlParams.delete('token');consider delete token 
-  console.log('Token:', token);
+  console.log('Token:', paramToken);
+  if( paramToken) {
+    setToken(paramToken);
+   }
 
   useEffect(() => {
     console.log('Fetching user data...');
@@ -113,6 +119,10 @@ const isFormValid = () => {
   const handleInputChange = (e) => {
     setFormData((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));
   };
+
+  if( !token) {
+    return ( <div>Not allowed</div>);
+  }
 
   return (
     <div >

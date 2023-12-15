@@ -3,8 +3,17 @@ import {Link} from "react-router-dom";
 import '../App.css';
 
 
-const InfusionSpecification = ()=> {
+const InfusionSpecification = ({token, setToken})=> {
     
+  // Check if there is a token in local storage
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramToken = urlParams.get('token');
+  // urlParams.delete('token');consider delete token 
+  console.log('Token:', paramToken);
+   if( paramToken) {
+    setToken(paramToken);
+   }
+
     const [patientWeight, setPatientWeight] = useState('');
     const [mabVolume, setMabVolume] = useState('');
     const [naclVolume, setNaclVolume] = useState('');
