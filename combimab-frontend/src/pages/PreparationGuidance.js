@@ -1,6 +1,6 @@
 import React from 'react';
 import GridLayout from 'react-grid-layout';
-
+import {Link} from "react-router-dom";
 // Import the images from the src/Images folder
 import image1 from '../Images/image1.png';
 import image2 from '../Images/image2.png';
