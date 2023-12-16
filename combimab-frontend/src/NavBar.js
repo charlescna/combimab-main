@@ -20,25 +20,25 @@ const NavBar = ({token, setToken}) => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav max-auto">
 
-              <li className="nav-item">
+              <li className="navbar-brand">
                 <Link className="nav-link" to="/About">About</Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/About" onClick={ ()=>{setToken(null);}}>log Out</Link>
+              <li className="navbar-brand">
+                <Link className="nav-link" to="/" onClick={ ()=>{setToken(null);}}>log Out</Link>
               </li>
-              <li className="nav-item">
+              <li className="navbar-brand">
                 <Link className="nav-link" to="/InfusionSpecification">Infusion Calculation</Link>
               </li>
-              <li className="nav-item">
+              <li className="navbar-brand">
               <Link className="nav-link" to="/PreparationGuidance">
-                Guidance
+              Preparation Guidance
               </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/TreatmentCalender">
-                Calendar
-              </Link>
-            </li>
+              </li>
+              <li className="navbar-brand">
+                <Link className="nav-link" to="/TreatmentCalender">
+                Treatment Calendar 
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -58,7 +58,7 @@ const NavBar = ({token, setToken}) => {
                 <Link className="nav-link" to="/About">About</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/loginpage">Log In</Link>
+                <Link className="nav-link" to="/loginpage">Google Log In</Link>
               </li>
             </ul>
           </div>

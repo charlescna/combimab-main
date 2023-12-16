@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import '../App.css';
 
 
+
 const InfusionSpecification = ({token, setToken})=> {
     
   // Check if there is a token in local storage
@@ -126,11 +127,12 @@ const InfusionSpecification = ({token, setToken})=> {
         </tbody>
       </table>
       <div>
-        <Link to="/TreatmentCalender">
-          <button className="CALENDAR">Treatment Calendar</button>
-        </Link>
+
         <Link to="/PreparationGuidance">
-          <button className="GUIDANCE">Preperation Steps</button>
+          <button className="GUIDANCE">Preparation Guidance</button>
+        </Link>
+        <Link to="/TreatmentCalender">
+          <button className="CALENDAR">Treatment Calendar </button>
         </Link>
       </div>
 

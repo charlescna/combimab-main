@@ -51,7 +51,7 @@ code {
 
 /* Box content styles */
 .box-content {
-  position: relative;
+  position: center;
   top: 90%; /* Adjusted to move it down */
   left: 20%;
   transform: translate(-50%, -50%);
@@ -76,7 +76,8 @@ code {
 .homepage-container h1 {
   font-family: 'Roboto', sans-serif;
   font-size: 35px;
-  color: rgb(61, 177, 164); /* Dark teal */
+  color: rgb(61, 177, 164);
+  margin-top: 20px;
 }
 
 /* Box styles */
@@ -400,3 +401,32 @@ input {
   background-color: #ffffff; /* You can set the background color */
 }
 
+
+.boxa {
+  position: relative;
+  width: 100%; 
+  height: 90vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.box-contenta {
+  position: center;
+  width: 90%;
+  max-width:900px;
+  padding: 10px;
+  box-sizing: border-box;
+  color: rgb(3, 21, 19);
+  background-color: white;
+  border-radius:10px;;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin: 10px auto;
+ 
+}
+.buttons-containerp {
+  margin-top:1200px;
+}

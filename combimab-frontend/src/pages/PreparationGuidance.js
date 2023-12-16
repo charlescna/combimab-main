@@ -49,11 +49,19 @@ const PreparationSteps = () => {
       <GridLayout className="layout" layout={layout} cols={12} rowHeight={30}>
         <div key="images" className="images">
           {stepsData.map((step, index) => renderStep(step, index))}
-        </div>
-        {/* Remove the div for descriptions on the side */}
-      </GridLayout>
+        </div>  
+      </GridLayout>   
+      <div className="buttons-containerp">
+      <Link to="/InfusionSpecification">
+        <button className="CALENDAR">Infusion Calculation</button>
+      </Link>
+
+      <Link to="/TreatmentCalender">
+        <button className="GUIDANCE">Treatment Calendar</button>
+      </Link>
     </div>
-  );
+  </div>
+);
 };
 
 export default PreparationSteps;

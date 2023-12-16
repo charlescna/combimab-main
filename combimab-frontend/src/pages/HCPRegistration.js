@@ -131,13 +131,13 @@ const isFormValid = () => {
           <h2>Welcome, {userData.userData.name}! </h2>
           <p>Your registration was successful. What would you like to do next?</p>
           <Link to="/InfusionSpecification">
-            <button className="GUIDANCE">Infusion Information</button>
+            <button className="GUIDANCE">Infusion Calculation</button>
           </Link>
           <Link to="/TreatmentCalender">
             <button className="CALENDAR">Treatment Calendar</button>
           </Link>
           <Link to="/PreparationGuidance">
-           <button className="GUIDANCE">Preperation Steps</button>
+           <button className="GUIDANCE">Preparation Guidance</button>
           </Link>
         </div>
       ) : (
@@ -146,13 +146,14 @@ const isFormValid = () => {
        
           <>
             <div>
-              <label>Name:</label>
-              <p>{userData.userData?.name || 'Loading...'}</p>
+            <div style={{ height: '20px' }}></div>
+              <label>Registered Name : {userData.userData?.name || 'Loading...'} </label>
+             
               
             </div>
             <div>
-              <label>Email:</label>
-              <p>{userData.userData?.email || 'Loading...'}</p>
+              <label> Registered Email : {userData.userData?.email || 'Loading...'}</label>
+             
             </div>
           </>
         )}

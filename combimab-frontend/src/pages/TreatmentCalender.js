@@ -119,11 +119,11 @@ const TreatmentCalendar = () => {
       )}
          <div>
          <Link to="/InfusionSpecification">
-          <button className="CALENDAR">Infusion information</button>
+          <button className="CALENDAR">Infusion Calculation</button>
          </Link>
 
          <Link to="/PreparationGuidance">
-          <button className="GUIDANCE">Preperation Steps</button>
+          <button className="GUIDANCE">Preparation Guidance</button>
          </Link>
          </div>
 

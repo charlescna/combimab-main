@@ -36,12 +36,14 @@ const HomePage = ()=>
     };
   return (
     <div className="homepage-container">
+    
       <h1>Combimab Rare Disease Dose Management App</h1>
       <div className="box">
         <img src="HomePagePhoto.png" alt="Bio" />
 
         <div className="box-content">
-          <h2>COMBIMAB IS</h2>
+          <h3>COMBIMAB </h3>
+          <h1> Web Application </h1>
           <p>Weight-based Nmab® 300 mg/3mL dosing calculator for patients with PN</p>
           <div className="calculator-bar">
             <label>Patient weight:</label>
@@ -67,13 +69,14 @@ const HomePage = ()=>
               </tr>
             </tbody>
           </table>
-          <p>For Health Care professionals support to have infusion specifications</p>
-          <p>Steps for preparation, Calendar generation please login </p>
+          <p>Unlock Exclusive Benefits</p>
+          <p>Infusion Specifications | Step-by-Step Preparation Guides|Personalized Calendar Generation</p>
+          <p>Log in for Enhanced Support! </p>
           <Link to="/loginpage">
-            <button className="hcp-support-button">Google Sgin in</button>
+            <button className="hcp-support-button">Google Log In</button>
           </Link>     
             
-          <p className="disclaimer">This web App is not for medical purpose. All information here is dummy data and is done as a project for students in CAN for CP3540.</p>
+          <p className="disclaimer">This web App is not for medical purpose. All information here is dummy data and is done as a project for students in CAN for CP3540 project.</p>
         </div>
       </div>
     </div>
