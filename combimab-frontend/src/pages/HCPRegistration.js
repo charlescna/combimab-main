@@ -23,17 +23,17 @@ const HCPRegistration = ({token, setToken}) => {
   const urlParams = new URLSearchParams(window.location.search);
   const paramToken = urlParams.get('token');
   // urlParams.delete('token');consider delete token 
-  console.log('Token:', paramToken);
+  // console.log('Token:', paramToken);
   if( paramToken) {
     setToken(paramToken);
    }
 
   useEffect(() => {
-    console.log('Fetching user data...');
+    // console.log('Fetching user data...');
     
     const fetchUserData = async () => {
       if (!token) {
-        console.log('No token found in URL parameters. Aborting fetch.');
+        // console.log('No token found in URL parameters. Aborting fetch.');
         return;
       } 
     const myHeaders = new Headers();
@@ -60,27 +60,27 @@ const HCPRegistration = ({token, setToken}) => {
       setFormData(updatedFormData);
       setUserData(userData);
       setUserExists(true);
-      console.log('User Data Received:', userData); 
+      // console.log('User Data Received:', userData); 
     } catch (e) {
-      console.log('Error fetching user data:', e.message);
+      // console.log('Error fetching user data:', e.message);
       setUserExists(false);
     }
   };
 
    
-      console.log('Render - userData:', userData);
+      // console.log('Render - userData:', userData);
 
 
     fetchUserData();
   }, [token]);
 
   useEffect(() => {
-    console.log('formDataall:', formData);
+    // console.log('formDataall:', formData);
   }, [formData]);
 
 
 const isFormValid = () => {
-  console.log('FormData:', formData);
+  // console.log('FormData:', formData);
   return (
     formData.phoneNumber.trim() !== '' &&
     !isNaN(formData.phoneNumber) && // Check if phone number contains only numbers

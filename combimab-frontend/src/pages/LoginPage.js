@@ -19,8 +19,8 @@ export function LoginPage() {
         })
         .then( (data) => setGoogleURL(data.url))
         .catch( e => {
-            console.log("Error!!!");
-            console.log(e.message);     
+            // console.log("Error!!!");
+            // console.log(e.message);     
           
         });
         

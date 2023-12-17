@@ -19,11 +19,19 @@ const PORT = 4000;
 connectToDatabase();
 const User = getCollection();
 // Serve static files
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json())
 app.use(express.json(path.join(__dirname, '../build')));
+
+app.get(/^(?!\/api).+/, (req, res) => {
+  res.sendFile(path.join(__dirname, '../build/index.html'));
+});
+
 
 // handles user registration by receiving POST requests with user data and saving it to the database
 app.post('/api/register', async (req, res) => {
@@ -65,8 +73,8 @@ const oauthClient = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_SECRET,
   'http://localhost:4000/api/google/oauth',
 );
-console.log('GOOGLE_CLIENT_ID:',process.env.GOOGLE_CLIENT_ID);
-console.log('GOOGLE_CLIENT_SECRET:', process.env.GOOGLE_CLIENT_SECRET);
+// console.log('GOOGLE_CLIENT_ID:',process.env.GOOGLE_CLIENT_ID);
+// console.log('GOOGLE_CLIENT_SECRET:', process.env.GOOGLE_CLIENT_SECRET);
 
 const getGoogleOauthURL = () => {
   return oauthClient.generateAuthUrl({
@@ -87,9 +95,6 @@ const googleOauthURL = getGoogleOauthURL();
 
 
 
-app.get(/^(?!\/api).+/, (req, res) => {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
-});
 
 // Helper function to get access and bearer token URL
 const getAccessAndBearerTokenUrl = ({ access_token }) =>
@@ -157,7 +162,7 @@ app.get('/api/google/oauth/', async (req, res) => {
             });
     }
   } catch (error ) {
-      console.log('Error in Google OAuth callback:', error);
+      // console.log('Error in Google OAuth callback:', error);
       res.status(500).json({ success: false, message: 'Error in Google OAuth callback', error: error.message });
   }
   });
@@ -168,7 +173,7 @@ app.get('/api/google/oauth/', async (req, res) => {
   
   app.get('/api/loginPage', async (req, res) => {
     const { authorization } = req.headers;
-    console.log(authorization);
+    // console.log(authorization);
   
     if( authorization == null ) {
       return res.status(400).json({ message: 'Authorization needed' })
@@ -181,7 +186,7 @@ app.get('/api/google/oauth/', async (req, res) => {
         if (err) {
           return res.status(400).json({ message: 'Unable to verify token' });
         }
-      console.log(decoded);
+      // console.log(decoded);
      });
     } catch (error) {
       console.error('Error in /api/loginPage:', error);
@@ -244,5 +249,5 @@ app.get('/api/google/oauth/', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  // console.log(`Server is running on http://localhost:${PORT}`);
 });

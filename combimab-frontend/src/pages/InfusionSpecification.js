@@ -10,7 +10,7 @@ const InfusionSpecification = ({token, setToken})=> {
   const urlParams = new URLSearchParams(window.location.search);
   const paramToken = urlParams.get('token');
   // urlParams.delete('token');consider delete token 
-  console.log('Token:', paramToken);
+  // console.log('Token:', paramToken);
    if( paramToken) {
     setToken(paramToken);
    }

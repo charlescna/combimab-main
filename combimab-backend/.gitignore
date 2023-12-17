@@ -1,0 +1,9 @@
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+node_modules
+node_modules
+.env
+mongo-db-data
+build
