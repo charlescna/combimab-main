@@ -26,8 +26,8 @@ const __dirname = path.dirname(__filename);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json())
-app.use(express.json(path.join(__dirname, '../build')));
 
+app.use(express.static(path.join(__dirname, '../build')));
 app.get(/^(?!\/api).+/, (req, res) => {
   res.sendFile(path.join(__dirname, '../build/index.html'));
 });
@@ -139,7 +139,7 @@ app.get('/api/google/oauth/', async (req, res) => {
         if (err) {
           throw new Error('Error generating JWT token');
         }
-        res.redirect(`http://localhost:3000/InfusionSpecification?token=${token}`);
+        res.redirect(`http://localhost:4000/InfusionSpecification?token=${token}`);
       });
     } else {
 
